@@ -1,22 +1,29 @@
 import React from "react";
-import {
-    Paper,
-} from "@mui/material";
 
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-type Props = {
-    children?: React.ReactNode;
-};
+import SearchBar from "./SearchBox";
+import ResultCard from "./ResultCard";
+import Wrapper from "./Wrapper";
 
+const Container = () => {
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState<string | undefined>();
 
-const Container = ({ children }: Props) => {
+  const query = searchParams.get("user");
+  useEffect(() => {
+    if (query) {
+      setSearchTerm(query);
+    }
+  }, [query]);
 
-    return (
-        <Paper
-            sx={{ p: "2rem", alignItems: "center", width: "600px", borderRadius: 0 }}
-        >    {children}
-        </Paper>
-    );
+return (
+    <Wrapper>
+    <SearchBar />
+    <ResultCard searchTerm={searchTerm} />
+  </Wrapper>
+)
 };
 
 export default Container;

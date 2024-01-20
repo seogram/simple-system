@@ -39,9 +39,7 @@ const ResultCard = ({ searchTerm }: Props) => {
         <Typography>{`Showing users for  ${searchTerm}`} </Typography>
       </Stack>
       <Stack>
-        {githubUserData?.map(({ id, login }) => {
-          return <RepoAccordion id={id} loginName={login} />;
-        })}
+        {githubUserData?.map(({ id, login }) => <RepoAccordion key={id} id={id} loginName={login} />)}
       </Stack>
     </Box>
   );

@@ -36,8 +36,7 @@ const RepositoryDetail = ({ username, enabled }: Props) => {
   }
   return (
     <Box sx={{ px: 4, maxHeight: "300px", overflow: "auto" }}>
-      {githubUserRepo?.map(({ id, name, stargazers_count }) => {
-        return (
+      {githubUserRepo?.map(({ id, name, stargazers_count }) => (
           <Box key={id}>
             <Stack
               sx={{ pb: 3 }}
@@ -50,10 +49,8 @@ const RepositoryDetail = ({ username, enabled }: Props) => {
                 <StarIcon fontSize="small" />
               </Box>
             </Stack>
-            <Stack></Stack>
           </Box>
-        );
-      })}
+        ))}
     </Box>
   );
 };
