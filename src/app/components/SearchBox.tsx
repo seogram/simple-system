@@ -1,33 +1,82 @@
-import React, { useState } from "react";
-import { Box, Button, Stack, InputBase, Paper } from "@mui/material";
+import { Box, Button, Stack, InputBase } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
-const SearchBar = () => {
+const RootStyle = styled(Box)(() => ({
+  paddingTop: "20px",
+  paddingBottom: "20px",
+}));
+
+const InputStyle = styled(InputBase)(({ theme }) => ({
+  width: "80%",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+  paddingLeft: "10px",
+  paddingRight: "10px",
+  marginBottom: "20px",
+  border: "1px solid",
+}));
+
+const ButtonStyle = styled(Button)(({ theme }) => ({
+  width: "50%",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+}));
+
+const FormSchema = Yup.object().shape({
+  username: Yup.string().required("userne is required"),
+});
+
+const SearchBox = () => {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const {
+    reset,
+    watch,
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm({
+    mode: "onTouched",
+    resolver: yupResolver(FormSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  const username = watch("username");
 
   const handleSearch = () => {
-    router.replace(`/?user=${searchTerm}`);
-    console.log(searchTerm);
-    setSearchTerm("");
+    router.replace(`/?user=${username}`);
+    reset();
   };
 
   return (
-    <Box sx={{ py: 2 }}>
-      <Stack>
-        <InputBase
-          sx={{ px: 1, mb: 2, border: "1px solid" }}
-          placeholder="Enter username"
-          inputProps={{ "aria-label": "search github users" }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+    <RootStyle>
+      <Stack alignItems="center">
+        <Controller
+          name="username"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <InputStyle {...field} fullWidth error={Boolean(error)} />
+          )}
         />
-        <Button variant="contained" onClick={handleSearch}>
+        <ButtonStyle
+          disabled={!isDirty}
+          variant="contained"
+          onClick={handleSubmit(handleSearch)}
+          name="search"
+        >
           Search
-        </Button>
+        </ButtonStyle>
       </Stack>
-    </Box>
+    </RootStyle>
   );
 };
 
-export default SearchBar;
+export default SearchBox;

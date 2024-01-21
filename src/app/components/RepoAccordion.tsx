@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
-  Stack,
-  Paper,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -19,7 +16,6 @@ const RepoAccordion = ({ id, loginName }: Props) => {
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
-      console.log("panel", panel);
     };
 
   return (
@@ -33,7 +29,7 @@ const RepoAccordion = ({ id, loginName }: Props) => {
         aria-controls="github-user-data"
         id={String(id)}
       >
-        <Typography variant="h6">{loginName}</Typography>
+        <Typography data-test-id="loginName">{loginName}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <RepositoryDetail username={loginName} enabled={Boolean(expanded)} />

@@ -2,7 +2,6 @@
 
 import styles from "./page.module.css";
 import { Suspense } from "react";
-
 import Container from "./components/Container";
 
 function SearchBarFallback() {

@@ -1,6 +1,3 @@
-import { alpha } from "@mui/material/styles";
-
-// SETUP COLORS
 
 export const contrastText = {
   white: "#FFFFFF",
@@ -84,9 +81,8 @@ const palette = {
     ...COMMON,
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
     background: {
-      secondary: "#f58634",
       paper: "#fff",
-      default: "#fff",
+      default : GREY[100]
     },
   },
  

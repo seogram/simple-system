@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useUserData } from "../hooks";
 import RepoAccordion from "./RepoAccordion";
-import { useTheme } from "@mui/material/styles";
+import Error from "./Error";
+import Loading from "./Loading";
 
 type Props = {
   searchTerm?: string;
@@ -10,38 +12,44 @@ type Props = {
 
 type userData = [{ id: number; login: string; repos_url: string }];
 
-const ResultCard = ({ searchTerm }: Props) => {
-  const theme = useTheme();
+const RootStyle = styled(Stack)(() => ({
+  gap: "20px",
+}));
 
+const ResultCard = ({ searchTerm }: Props) => {
   const {
     data: githubUserData,
-    error: userFetchError,
     isFetching: isUserFetching,
-  }: { data: userData; error: any; isFetching: boolean } = useUserData(
-    searchTerm
-  );
+    isError ,
+  }: {
+    data: userData;
+    isFetching: boolean;
+    isError : boolean;
+  } = useUserData(searchTerm);
 
-  if (userFetchError) {
-    return (  //TODO : extract o its own component Error component
-      <Typography sx={{ color: theme.palette.error.main }}>
-        Something went wrong...
-      </Typography>
-    );
+  if (isError) {
+    return <Error />;
   }
 
   if (isUserFetching) {
-    return <Typography>Loading...</Typography>;
+    return <Loading />;
   }
 
   return (
-    <Box sx={{ py: 2 }}>
-      <Stack sx={{ pb: 3 }}>
-        <Typography>{`Showing users for  ${searchTerm}`} </Typography>
-      </Stack>
-      <Stack>
-        {githubUserData?.map(({ id, login }) => <RepoAccordion key={id} id={id} loginName={login} />)}
-      </Stack>
-    </Box>
+    <RootStyle>
+     {searchTerm && (
+       <Box>
+       <Typography data-test-id="result">
+         {`Showing users for  ${searchTerm} :`}
+       </Typography>
+     </Box>
+     )}
+      <Box>
+        {githubUserData?.map(({ id, login }) => (
+          <RepoAccordion key={id} id={id} loginName={login} />
+        ))}
+      </Box>
+    </RootStyle>
   );
 };
 

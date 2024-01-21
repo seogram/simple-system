@@ -1,47 +1,45 @@
 import { useQuery } from "react-query";
 // ----------------------------------------------------------------------
-const baseUrl = "https://api.github.com";
+const BASE_URL = "https://api.github.com";
 
-const request = async (url) => {
+const logSentry = () => {
+  //Log in Sentry or other log systems
+};
+const request = async (url: string) => {
   try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const res = await response.json();
-    return res;
+    const response = await fetch(url);
+    if (!response.ok) {
+      const errorCode = response.status;
+      throw new Error(`An error occurred: ${errorCode}`);
+    }
+    return response.json();
   } catch (error) {
-    console.log("error for", error);
-    return {
-      res: [],
-    };
+    logSentry();
+    throw error;
   }
 };
-const getGithubUserData = async (query) => {
+const getGithubUserData = async (query?: string) => {
   if (!query) return;
 
   const params = {
     q: query,
-    per_page: 5,
+    per_page: "5",
   };
   const qs = "?" + new URLSearchParams(params).toString();
-  const url = `${baseUrl}/search/users${qs}`;
+  const url = `${BASE_URL}/search/users${qs}`;
   const response = await request(url);
   return response?.items;
 };
 
-const getGithubUserRepos = async (username) => {
+const getGithubUserRepos = async (username?: string) => {
   if (!username) return;
-  const url = `${baseUrl}/users/${username}/repos`;
+  const url = `${BASE_URL}/users/${username}/repos`;
 
   const response = await request(url);
   return response;
 };
 
-export function useUserData(username) {
+export function useUserData(username?: string) {
   const { isFetching, isError, data, error } = useQuery(
     `githubuser-${username}`,
     () => getGithubUserData(username),
@@ -58,7 +56,13 @@ export function useUserData(username) {
   };
 }
 
-export function useUserRepo({username,enabled}) {
+export function useUserRepo({
+  username,
+  enabled,
+}: {
+  username?: string;
+  enabled: boolean;
+}) {
   const { isFetching, isError, data, error } = useQuery(
     `githubRepo-${username}`,
     () => getGithubUserRepos(username),

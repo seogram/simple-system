@@ -1,57 +1,71 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { useUserRepo } from "../hooks";
-import { useTheme } from "@mui/material/styles";
 import StarIcon from "@mui/icons-material/Star";
+import Error from "./Error";
+import Loading from "./Loading";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   enabled: boolean;
   username?: string;
 };
 
-type userData = [{ id: number; name: string; stargazers_count: string }];
+type userData = [
+  { id: number; name: string; description: string; stargazers_count: string },
+];
+
+const RootStyle = styled(Box)(() => ({
+  padding: "0.5rem",
+  maxHeight: "260px",
+  overflow: "auto",
+}));
+
+const WrapperStyle = styled(Box)(({ theme }) => ({
+  background: theme.palette.background.default,
+  padding: "10px",
+  marginBottom: "10px",
+}));
+const RightBoxStyle = styled(Box)(() => ({
+  display: "flex",
+}));
 
 const RepositoryDetail = ({ username, enabled }: Props) => {
-  const theme = useTheme();
-
   const {
     data: githubUserRepo,
-    error: userRepoFetchError,
     isFetching: isUserRepoFetching,
-  }: { data: userData; error: any; isFetching: boolean } = useUserRepo({
+    isError,
+  }: { data: userData; isError: boolean; isFetching: boolean } = useUserRepo({
     username,
     enabled,
   });
 
-  if (userRepoFetchError) {
-    return (
-      //TODO : extract o its own component Error component
-      <Typography sx={{ color: theme.palette.error.main }}>
-        Something went wrong...
-      </Typography>
-    );
+  if (isError) {
+    return <Error />;
   }
 
   if (isUserRepoFetching) {
-    return <Typography>Loading...</Typography>;
+    return <Loading />;
   }
+
   return (
-    <Box sx={{ px: 4, maxHeight: "300px", overflow: "auto" }}>
-      {githubUserRepo?.map(({ id, name, stargazers_count }) => (
-          <Box key={id}>
-            <Stack
-              sx={{ pb: 3 }}
-              direction="row"
-              justifyContent="space-between"
-            >
-              <Typography>{name} </Typography>
-              <Box sx={{ display: "flex" }} alignItems="center">
-                <Typography variant="body2">{stargazers_count} </Typography>
-                <StarIcon fontSize="small" />
-              </Box>
-            </Stack>
-          </Box>
-        ))}
-    </Box>
+    <RootStyle>
+      {githubUserRepo?.map(({ id, name, description, stargazers_count }) => (
+        <WrapperStyle key={id}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h6" data-test-id="repoName">
+              {name}
+            </Typography>
+            <RightBoxStyle alignItems="center">
+              <Typography variant="body2" data-test-id="repoStars">
+                {stargazers_count}
+              </Typography>
+              <StarIcon fontSize="small" />
+            </RightBoxStyle>
+          </Stack>
+          <Stack data-test-id="repoDescription">{description}</Stack>
+        </WrapperStyle>
+      ))}
+    </RootStyle>
   );
 };
 

@@ -1,9 +1,7 @@
 import React from "react";
-
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-
-import SearchBar from "./SearchBox";
+import SearchBox from "./SearchBox";
 import ResultCard from "./ResultCard";
 import Wrapper from "./Wrapper";
 
@@ -20,7 +18,7 @@ const Container = () => {
 
 return (
     <Wrapper>
-    <SearchBar />
+    <SearchBox />
     <ResultCard searchTerm={searchTerm} />
   </Wrapper>
 )
