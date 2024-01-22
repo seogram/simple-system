@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useUserData } from "../hooks";
@@ -17,14 +17,16 @@ const RootStyle = styled(Stack)(() => ({
 }));
 
 const ResultCard = ({ searchTerm }: Props) => {
+  const [expanded, setExpanded] = useState<string | false>(false);
+
   const {
     data: githubUserData,
     isFetching: isUserFetching,
-    isError ,
+    isError,
   }: {
     data: userData;
     isFetching: boolean;
-    isError : boolean;
+    isError: boolean;
   } = useUserData(searchTerm);
 
   if (isError) {
@@ -37,17 +39,15 @@ const ResultCard = ({ searchTerm }: Props) => {
 
   return (
     <RootStyle>
-     {searchTerm && (
-       <Box>
-       <Typography data-test-id="result">
-         {`Showing users for  ${searchTerm} :`}
-       </Typography>
-     </Box>
-     )}
+      {searchTerm && (
+        <Box>
+          <Typography data-test-id="result">
+            {`Showing users for  ${searchTerm} :`}
+          </Typography>
+        </Box>
+      )}
       <Box>
-        {githubUserData?.map(({ id, login }) => (
-          <RepoAccordion key={id} id={id} loginName={login} />
-        ))}
+        <RepoAccordion data={githubUserData} />
       </Box>
     </RootStyle>
   );

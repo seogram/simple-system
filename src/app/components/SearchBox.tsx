@@ -2,8 +2,6 @@ import { Box, Button, Stack, InputBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 
 const RootStyle = styled(Box)(() => ({
   paddingTop: "20px",
@@ -28,9 +26,7 @@ const ButtonStyle = styled(Button)(({ theme }) => ({
   },
 }));
 
-const FormSchema = Yup.object().shape({
-  username: Yup.string().required("userne is required"),
-});
+
 
 const SearchBox = () => {
   const router = useRouter();
@@ -43,7 +39,6 @@ const SearchBox = () => {
     formState: { isDirty },
   } = useForm({
     mode: "onTouched",
-    resolver: yupResolver(FormSchema),
     defaultValues: {
       username: "",
     },
@@ -63,7 +58,11 @@ const SearchBox = () => {
           name="username"
           control={control}
           render={({ field, fieldState: { error } }) => (
-            <InputStyle {...field} fullWidth error={Boolean(error)} />
+            <InputStyle
+              {...field}
+              fullWidth
+              error={Boolean(error)}
+            />
           )}
         />
         <ButtonStyle

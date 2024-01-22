@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Box,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -8,9 +9,9 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryDetail from "./RepositoryDetail";
 
-type Props = { id: number; loginName: string };
+type Props = { data: { id: number; login: string }[] };
 
-const RepoAccordion = ({ id, loginName }: Props) => {
+const RepoAccordion = ({ data }: Props) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
@@ -19,22 +20,26 @@ const RepoAccordion = ({ id, loginName }: Props) => {
     };
 
   return (
-    <Accordion
-      key={id}
-      expanded={expanded === String(id)}
-      onChange={handleChange(String(id))}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="github-user-data"
-        id={String(id)}
-      >
-        <Typography data-test-id="loginName">{loginName}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <RepositoryDetail username={loginName} enabled={Boolean(expanded)} />
-      </AccordionDetails>
-    </Accordion>
+    <Box>
+      {data?.map(({ id, login }) => (
+        <Accordion
+          key={id}
+          expanded={expanded === String(id)}
+          onChange={handleChange(String(id))}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="github-user-data"
+            id={String(id)}
+          >
+            <Typography data-test-id="loginName">{login}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <RepositoryDetail username={login} enabled={Boolean(expanded)} />
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Box>
   );
 };
 
