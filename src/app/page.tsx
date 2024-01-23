@@ -2,10 +2,10 @@
 
 import styles from "./page.module.css";
 import { Suspense } from "react";
-import Container from "./components/Container/Container";
+import {Container , Loading} from "./components";
 
 function SearchBarFallback() {
-  return <>Loading...</>;
+  return <Loading />;
 }
 
 export default function Home() {

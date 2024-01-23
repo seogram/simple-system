@@ -6,26 +6,30 @@ import RepoAccordion from "../RepoAccordion/RepoAccordion";
 import Error from "../Error/Error";
 import Loading from "../Loading/Loading";
 
-type Props = {
-  searchTerm?: string;
-};
-
-type userData = [{ id: number; login: string; repos_url: string }];
-
 const RootStyle = styled(Stack)(() => ({
   gap: "20px",
 }));
 
-const ResultCard = ({ searchTerm }: Props) => {
+type Props = {
+  searchTerm?: string;
+};
+
+type Data = { id: string; login: string; repos_url: string };
+type UserData = Data[];
+
+type UseUserDataReturn = {
+  data: UserData;
+  isFetching: boolean;
+  isError: boolean;
+};
+
+const ResultCard: React.FC<Props> = ({ searchTerm }) => {
+
   const {
     data: githubUserData,
     isFetching: isUserFetching,
     isError,
-  }: {
-    data: userData;
-    isFetching: boolean;
-    isError: boolean;
-  } = useUserData(searchTerm);
+  }: UseUserDataReturn = useUserData(searchTerm);
 
   if (isError) {
     return <Error />;
@@ -34,11 +38,12 @@ const ResultCard = ({ searchTerm }: Props) => {
   if (isUserFetching) {
     return <Loading />;
   }
+
   return (
     <RootStyle>
       {searchTerm && (
         <Box>
-          <Typography data-test-id="result" data-testid="result">
+          <Typography data-test-id="result">
             {`Showing users for  ${searchTerm} :`}
           </Typography>
         </Box>

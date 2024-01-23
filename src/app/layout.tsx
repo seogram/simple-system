@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ReactQueryProvider } from "./ReactQueryProvider";
 import ThemeProvider from "../theme";
 
@@ -19,17 +19,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  
   return (
     <ThemeProvider>
-    <html lang="en">
-      <body className={inter.className} >
-      <ReactQueryProvider>
-      <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
-      </ReactQueryProvider>
-
+      <html lang="en">
+        <body className={inter.className}>
+          <ReactQueryProvider>
+            <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+          </ReactQueryProvider>
         </body>
-    </html>
+      </html>
     </ThemeProvider>
   );
 }

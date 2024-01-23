@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Box,
   Accordion,
@@ -9,15 +9,16 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RepositoryDetail from "../RepositoryDetail/RepositoryDetail";
 
-type Props = { data: { id: number; login: string }[] };
+type Props = {
+  data: Array<{ id: string; login: string }>;
+};
 
-const RepoAccordion = ({ data }: Props) => {
+const RepoAccordion: React.FC<Props> = ({ data }) => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
-  const handleChange =
-    (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = useCallback((panel: string) => {
+    setExpanded((prevExpanded) => (prevExpanded !== panel ? panel : false));
+  }, []);
 
   return (
     <Box>
@@ -26,7 +27,7 @@ const RepoAccordion = ({ data }: Props) => {
           data-testid={id}
           key={id}
           expanded={expanded === String(id)}
-          onChange={handleChange(String(id))}
+          onChange={() => handleChange(String(id))}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

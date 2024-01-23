@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Box, Button, Stack, InputBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
@@ -26,28 +27,36 @@ const ButtonStyle = styled(Button)(({ theme }) => ({
   },
 }));
 
+type SearchFormValues = {
+  username: string;
+}
+
 const SearchBox = () => {
   const router = useRouter();
 
   const {
     reset,
-    watch,
     control,
     handleSubmit,
     formState: { isDirty },
-  } = useForm({
+  } = useForm<SearchFormValues>({
     mode: "onTouched",
     defaultValues: {
       username: "",
     },
   });
 
-  const username = watch("username");
-
-  const handleSearch = () => {
-    router.replace(`/?user=${username}`);
-    reset();
-  };
+  const handleSearch = useCallback(
+    (data: SearchFormValues) => {
+      const searchQuery = encodeURIComponent(data.username).replace(
+        /%20/g,
+        ""
+      );
+      router.replace(`/?user=${searchQuery}`);
+      reset();
+    },
+    [router, reset]
+  );
 
   return (
     <RootStyle>
@@ -58,7 +67,7 @@ const SearchBox = () => {
           render={({ field, fieldState: { error } }) => (
             <InputStyle
               {...field}
-              placeholder="Username..."
+              placeholder="Username... (without space)"
               fullWidth
               error={Boolean(error)}
             />

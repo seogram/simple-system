@@ -21,7 +21,7 @@ exports[`Container Component  should render without crashing when there is no se
                 aria-invalid="false"
                 class="MuiInputBase-input css-yz9k0d-MuiInputBase-input"
                 name="username"
-                placeholder="Username..."
+                placeholder="Username... (without space)"
                 type="text"
                 value=""
               />
@@ -69,7 +69,7 @@ exports[`Container Component  should render without crashing when there is no se
               aria-invalid="false"
               class="MuiInputBase-input css-yz9k0d-MuiInputBase-input"
               name="username"
-              placeholder="Username..."
+              placeholder="Username... (without space)"
               type="text"
               value=""
             />

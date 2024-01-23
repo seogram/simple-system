@@ -7,8 +7,6 @@ import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material/st
 import palette from './palette';
 import typography from './typography';
 
-// ----------------------------------------------------------------------
-
 ThemeProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
