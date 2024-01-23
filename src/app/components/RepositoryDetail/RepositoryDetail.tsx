@@ -1,8 +1,8 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useUserRepo } from "../hooks";
+import { useUserRepo } from "../../hooks";
 import StarIcon from "@mui/icons-material/Star";
-import Error from "./Error";
-import Loading from "./Loading";
+import Error from "../Error/Error";
+import Loading from "../Loading/Loading";
 import { styled } from "@mui/material/styles";
 
 type Props = {

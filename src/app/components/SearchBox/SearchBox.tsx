@@ -26,8 +26,6 @@ const ButtonStyle = styled(Button)(({ theme }) => ({
   },
 }));
 
-
-
 const SearchBox = () => {
   const router = useRouter();
 
@@ -60,12 +58,14 @@ const SearchBox = () => {
           render={({ field, fieldState: { error } }) => (
             <InputStyle
               {...field}
+              placeholder="Username..."
               fullWidth
               error={Boolean(error)}
             />
           )}
         />
         <ButtonStyle
+          data-testid="searchButton"
           disabled={!isDirty}
           variant="contained"
           onClick={handleSubmit(handleSearch)}

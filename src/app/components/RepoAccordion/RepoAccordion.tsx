@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import RepositoryDetail from "./RepositoryDetail";
+import RepositoryDetail from "../RepositoryDetail/RepositoryDetail";
 
 type Props = { data: { id: number; login: string }[] };
 
@@ -23,6 +23,7 @@ const RepoAccordion = ({ data }: Props) => {
     <Box>
       {data?.map(({ id, login }) => (
         <Accordion
+          data-testid={id}
           key={id}
           expanded={expanded === String(id)}
           onChange={handleChange(String(id))}

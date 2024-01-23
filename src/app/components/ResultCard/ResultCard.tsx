@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useUserData } from "../hooks";
-import RepoAccordion from "./RepoAccordion";
-import Error from "./Error";
-import Loading from "./Loading";
+import { useUserData } from "../../hooks";
+import RepoAccordion from "../RepoAccordion/RepoAccordion";
+import Error from "../Error/Error";
+import Loading from "../Loading/Loading";
 
 type Props = {
   searchTerm?: string;
@@ -17,8 +17,6 @@ const RootStyle = styled(Stack)(() => ({
 }));
 
 const ResultCard = ({ searchTerm }: Props) => {
-  const [expanded, setExpanded] = useState<string | false>(false);
-
   const {
     data: githubUserData,
     isFetching: isUserFetching,
@@ -36,12 +34,11 @@ const ResultCard = ({ searchTerm }: Props) => {
   if (isUserFetching) {
     return <Loading />;
   }
-
   return (
     <RootStyle>
       {searchTerm && (
         <Box>
-          <Typography data-test-id="result">
+          <Typography data-test-id="result" data-testid="result">
             {`Showing users for  ${searchTerm} :`}
           </Typography>
         </Box>

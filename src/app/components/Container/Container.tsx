@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import SearchBox from "./SearchBox";
-import ResultCard from "./ResultCard";
-import Wrapper from "./Wrapper";
+import SearchBox from "../SearchBox/SearchBox";
+import ResultCard from "../ResultCard/ResultCard";
+import Wrapper from "../Wrapper";
 
 const Container = () => {
   const searchParams = useSearchParams();

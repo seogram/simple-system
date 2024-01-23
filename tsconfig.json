@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "cypress/e2e/app.cy.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "cypress/e2e/app.cy.js", "src/app/components/ResultCard.stories.js", "src/app/components/ResultCard.stories.js"],
   "exclude": ["node_modules"]
 }
